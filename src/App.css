@@ -1,0 +1,8 @@
+.hover-info {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 5px;
+  max-width: 200px;
+  text-align: center;
+}
