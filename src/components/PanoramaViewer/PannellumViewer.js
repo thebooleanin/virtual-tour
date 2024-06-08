@@ -1,0 +1,106 @@
+import React, { useEffect, useState } from 'react';
+import { Pannellum } from "pannellum-react";
+import './PannellumViewer.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchImagesSuccess, fetchImagesFailure, fetchImagesRequest } from '../../redux/actions/imageActions'
+function PannellumViewer() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const dispatch = useDispatch()
+    const { images, loading, error } = useSelector((state) => state.image);
+
+    const nextImage = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    };
+
+    const prevImage = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    };
+
+    const goToImage = (index) => {
+        setCurrentIndex(index);
+    };
+
+    const handleFullScreen = () => {
+        const elem = document.getElementById('pannellum-viewer');
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE/Edge
+            elem.msRequestFullscreen();
+        }
+    };
+
+    // useEffect(() => {
+    //     dispatch(fetchImagesRequest());
+    //     fetch('your-api-url')
+    //         .then(response => response.json())
+    //         .then(data => dispatch(fetchImagesSuccess(data)))
+    //         .catch(error => dispatch(fetchImagesFailure(error)));
+    // }, [dispatch]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+    return (
+        <div id="pannellum-viewer" className="pannellum-viewer">
+            {images?.length ? (
+                <>
+                    <Pannellum
+                        width="100%"
+                        height="100%"
+                        image={images[currentIndex].Images.ImageBase64}
+                        autoLoad
+                        orientationOnByDefault
+                        compass={true}
+                        showZoomCtrl={false}
+                        showFullscreenCtrl={false}
+                        full
+                        onLoad={() => {
+                            console.log("panorama loaded");
+                        }}
+                    >
+                        {images.map((image, index) => (
+                            <Pannellum.Hotspot
+                                key={`hotspot-${index}`}
+                                type="custom"
+                                pitch={image.Images.coOrdinates[1]}
+                                yaw={image.Images.coOrdinates[0]}
+                                handleClick={() => goToImage(index)}
+                                name={`hs-${index}`}
+                            />
+                        ))}
+                    </Pannellum>
+                    <div className="overlay">
+                        <div className="scene-names">
+                            {images.map((image, index) => (
+                                <button
+                                    key={`scene-${index}`}
+                                    onClick={() => goToImage(index)}
+                                    className={`scene-name ${currentIndex === index ? 'active' : ''}`}
+                                >
+                                    {image.SceneName}
+                                </button>
+                            ))}
+                        </div>
+                        <button className="fullscreen-button" onClick={handleFullScreen}>Full Screen</button>
+                        <div className="navigation-buttons">
+                            <button onClick={prevImage}>Previous</button>
+                            <button onClick={nextImage}>Next</button>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div>No images available.</div>
+            )}
+        </div>
+    );
+}
+
+export default PannellumViewer;

@@ -1,0 +1,67 @@
+.pannellum-viewer {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.scene-names {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scene-name {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.scene-name.active {
+    background: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+}
+
+.fullscreen-button {
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.navigation-buttons button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
