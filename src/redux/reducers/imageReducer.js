@@ -25,18 +25,25 @@ import { FETCH_IMAGES_REQUEST, FETCH_IMAGES_SUCCESS, FETCH_IMAGES_FAILURE } from
 const initialState = {
     images: [
         {
-            SceneName: "Beach",
+            SceneName: "Entrance",
             Images: {
-                ImageBase64: `/images/360img.jpg`,
+                ImageBase64: `/images/img11.jpg`,
                 coOrdinates: [100, 0],
             },
 
         },
         {
-            SceneName: "Room",
+            SceneName: "Lobby",
             Images: {
-                ImageBase64: `/images/img1.png`,
+                ImageBase64: `/images/lobby.jpg`,
                 coOrdinates: [-90, -10],
+            },
+
+        },{
+            SceneName: "Clinic",
+            Images: {
+                ImageBase64: `/images/img2.jpg`,
+                coOrdinates: [-80, 0],
             },
 
         },
