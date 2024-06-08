@@ -6,7 +6,7 @@ import { fetchImagesSuccess, fetchImagesFailure, fetchImagesRequest } from '../.
 function PannellumViewer() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const dispatch = useDispatch()
-    const { images, loading, error } = useSelector((state) => state.image);
+    const { images } = useSelector((state) => state.image);
 
     const nextImage = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -41,13 +41,6 @@ function PannellumViewer() {
     //         .catch(error => dispatch(fetchImagesFailure(error)));
     // }, [dispatch]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
     return (
         <div id="pannellum-viewer" className="pannellum-viewer">
             {images?.length ? (
