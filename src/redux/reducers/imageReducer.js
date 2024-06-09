@@ -27,23 +27,23 @@ const initialState = {
         {
             SceneName: "Entrance",
             Images: {
-                ImageBase64: `/images/img11.jpg`,
-                coOrdinates: [100, 0],
+                ImageBase64: `/images/entrance.jpg`,
+                coOrdinates: [-30, -30],
             },
 
         },
         {
             SceneName: "Lobby",
             Images: {
-                ImageBase64: `/images/lobby.jpg`,
-                coOrdinates: [-90, -10],
+                ImageBase64: `/images/lobby1.jpg`,
+                coOrdinates: [15, 25],
             },
 
         },{
             SceneName: "Clinic",
             Images: {
                 ImageBase64: `/images/img2.jpg`,
-                coOrdinates: [-80, 0],
+                coOrdinates: [35, -90],
             },
 
         },

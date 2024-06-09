@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Pannellum } from "pannellum-react";
 import './PannellumViewer.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchImagesSuccess, fetchImagesFailure, fetchImagesRequest } from '../../redux/actions/imageActions'
+import { fetchImagesSuccess, fetchImagesFailure, fetchImagesRequest } from '../../redux/actions/imageActions';
+
 function PannellumViewer() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const { images } = useSelector((state) => state.image);
 
     const nextImage = () => {
@@ -50,25 +51,22 @@ function PannellumViewer() {
                         height="100%"
                         image={images[currentIndex].Images.ImageBase64}
                         autoLoad
-                        orientationOnByDefault
+                        orientationOnByDeffault
                         compass={true}
                         showZoomCtrl={false}
                         showFullscreenCtrl={false}
-                        full
                         onLoad={() => {
                             console.log("panorama loaded");
                         }}
                     >
-                        {images.map((image, index) => (
-                            <Pannellum.Hotspot
-                                key={`hotspot-${index}`}
-                                type="custom"
-                                pitch={image.Images.coOrdinates[1]}
-                                yaw={image.Images.coOrdinates[0]}
-                                handleClick={() => goToImage(index)}
-                                name={`hs-${index}`}
-                            />
-                        ))}
+                        <Pannellum.Hotspot
+                            key={`hotspot-${currentIndex}`}
+                            type="custom"
+                            pitch={images[currentIndex].Images.coOrdinates[1]}
+                            yaw={images[currentIndex].Images.coOrdinates[0]}
+                            handleClick={() => nextImage()}
+                            name={`hs-next`}
+                        />
                     </Pannellum>
                     <div className="overlay">
                         <div className="scene-names">
