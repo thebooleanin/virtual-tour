@@ -35,17 +35,24 @@ const initialState = {
       },
     },
     {
-      SceneName: "Lobby",
+      SceneName: "Reception",
       Images: {
-        ImageBase64: `/images/lobby1.jpg`,
+        ImageBase64: `/images/lobbyV2.jpg`,
         coOrdinates: [15, 25],
       },
     },
     {
-      SceneName: "Clinic",
+      SceneName: "Lab",
       Images: {
         ImageBase64: `/images/clinic.jpg`,
-        coOrdinates: [35, -90],
+        coOrdinates: [15, 25],
+      },
+    },
+    {
+      SceneName: "X-ray Lab",
+      Images: {
+        ImageBase64: `/images/xray.jpg`,
+        coOrdinates: [-30, -30],
       },
     },
   ],

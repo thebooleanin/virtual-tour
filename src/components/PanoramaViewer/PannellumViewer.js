@@ -80,7 +80,7 @@ function PannellumViewer() {
                                 </button>
                             ))}
                         </div>
-                        <button className="fullscreen-button" onClick={handleFullScreen}>Full Screen</button>
+                        {/* <button className="fullscreen-button" onClick={handleFullScreen}>Full Screen</button> */}
                         <div className="navigation-buttons">
                             <button onClick={prevImage}>Previous</button>
                             <button onClick={nextImage}>Next</button>
