@@ -1,24 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Pannellum } from "pannellum-react";
 import './PannellumViewer.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchImagesSuccess, fetchImagesFailure, fetchImagesRequest } from '../../redux/actions/imageActions';
+import { useSelector } from 'react-redux';
 
 function PannellumViewer() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const dispatch = useDispatch();
-    const { images } = useSelector((state) => state.image);
+    const [currentScene, setCurrentScene] = useState(0);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const { scenes } = useSelector((state) => state.image);
 
-    const nextImage = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    };
-
-    const prevImage = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-    };
-
-    const goToImage = (index) => {
-        setCurrentIndex(index);
+    const goToScene = (sceneName) => {
+        const sceneIndex = scenes.findIndex(scene => scene.name === sceneName);
+        if (sceneIndex !== -1) {
+            setCurrentScene(sceneIndex);
+            setMenuOpen(false); // Close menu on scene change
+        }
     };
 
     const handleFullScreen = () => {
@@ -34,24 +29,16 @@ function PannellumViewer() {
         }
     };
 
-    // useEffect(() => {
-    //     dispatch(fetchImagesRequest());
-    //     fetch('your-api-url')
-    //         .then(response => response.json())
-    //         .then(data => dispatch(fetchImagesSuccess(data)))
-    //         .catch(error => dispatch(fetchImagesFailure(error)));
-    // }, [dispatch]);
-
     return (
         <div id="pannellum-viewer" className="pannellum-viewer">
-            {images?.length ? (
+            {scenes?.length ? (
                 <>
                     <Pannellum
                         width="100%"
                         height="100%"
-                        image={images[currentIndex].Images.ImageBase64}
+                        image={scenes[currentScene].image}
                         autoLoad
-                        orientationOnByDeffault
+                        orientationOnByDefault
                         compass={true}
                         showZoomCtrl={false}
                         showFullscreenCtrl={false}
@@ -59,36 +46,42 @@ function PannellumViewer() {
                             console.log("panorama loaded");
                         }}
                     >
-                        <Pannellum.Hotspot
-                            key={`hotspot-${currentIndex}`}
-                            type="custom"
-                            pitch={images[currentIndex].Images.coOrdinates[1]}
-                            yaw={images[currentIndex].Images.coOrdinates[0]}
-                            handleClick={() => nextImage()}
-                            name={`hs-next`}
-                        />
+                        {scenes[currentScene].hotspots.map((hotspot, index) => (
+                            <Pannellum.Hotspot
+                                key={`hotspot-${index}`}
+                                type="custom"
+                                pitch={hotspot.position[1]}
+                                yaw={hotspot.position[0]}
+                                handleClick={() => goToScene(hotspot.targetScene)}
+                                name={`hs-${index}`}
+                            />
+                        ))}
                     </Pannellum>
                     <div className="overlay">
-                        <div className="scene-names">
-                            {images.map((image, index) => (
-                                <button
-                                    key={`scene-${index}`}
-                                    onClick={() => goToImage(index)}
-                                    className={`scene-name ${currentIndex === index ? 'active' : ''}`}
-                                >
-                                    {image.SceneName}
-                                </button>
-                            ))}
-                        </div>
-                        {/* <button className="fullscreen-button" onClick={handleFullScreen}>Full Screen</button> */}
+                        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>
+                            &#9776; {/* Unicode for hamburger icon */}
+                        </button>
+                        {menuOpen && (
+                            <div className="scene-names">
+                                {scenes.map((scene, index) => (
+                                    <button
+                                        key={`scene-${index}`}
+                                        onClick={() => goToScene(scene.name)}
+                                        className={`scene-name ${currentScene === index ? 'active' : ''}`}
+                                    >
+                                        {scene.name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                         <div className="navigation-buttons">
-                            <button onClick={prevImage}>Previous</button>
-                            <button onClick={nextImage}>Next</button>
+                            <button onClick={() => goToScene(scenes[(currentScene - 1 + scenes.length) % scenes.length].name)}>Previous</button>
+                            <button onClick={() => goToScene(scenes[(currentScene + 1) % scenes.length].name)}>Next</button>
                         </div>
                     </div>
                 </>
             ) : (
-                <div>No images available.</div>
+                <div>No scenes available.</div>
             )}
         </div>
     );

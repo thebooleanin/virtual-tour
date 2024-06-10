@@ -1,24 +1,3 @@
-// const initialState = {
-//     images: [
-//         {
-//             SceneName: "Beach",
-//             Images: {
-//                 ImageBase64: `/images/360img.jpg`,
-//                 coOrdinates: [100, 0],
-//             },
-
-//         },
-//         {
-//             SceneName: "Room",
-//             Images: {
-//                 ImageBase64: `/images/img1.png`,
-//                 coOrdinates: [-90, -10],
-//             },
-
-//         },
-//     ],
-// };
-// imageReducer.js
 import {
   FETCH_IMAGES_REQUEST,
   FETCH_IMAGES_SUCCESS,
@@ -26,38 +5,56 @@ import {
 } from "../types";
 
 const initialState = {
-  images: [
+  scenes: [
     {
-      SceneName: "Entrance",
-      Images: {
-        ImageBase64: `/images/1.jpg`,
-        coOrdinates: [-30, -30],
-      },
+      name: "Entrance",
+      image: "/images/1.jpg",
+      hotspots: [
+        {
+          position: [-30, -30],
+          targetScene: "Reception"
+        }
+      ]
     },
     {
-      SceneName: "Reception",
-      Images: {
-        ImageBase64: `/images/lobbyV2.jpg`,
-        coOrdinates: [15, 25],
-      },
+      name: "Reception",
+      image: "/images/lobbyV2.jpg",
+      hotspots: [
+        {
+          position: [15, 25],
+          targetScene: "Lab"
+        },
+        {
+          position: [-30, -30],
+          targetScene: "Entrance"
+        }
+      ]
     },
     {
-      SceneName: "Lab",
-      Images: {
-        ImageBase64: `/images/clinic.jpg`,
-        coOrdinates: [15, 25],
-      },
+      name: "Lab",
+      image: "/images/clinic.jpg",
+      hotspots: [
+        {
+          position: [15, 40],
+          targetScene: "Reception"
+        },
+        {
+          position: [-30, 40],
+          targetScene: "X-ray Lab"
+        }
+      ]
     },
     {
-      SceneName: "X-ray Lab",
-      Images: {
-        ImageBase64: `/images/xray.jpg`,
-        coOrdinates: [-30, -30],
-      },
-    },
-  ],
-  loading: false,
-  error: null,
+      name: "X-ray Lab",
+      image: "/images/xray.jpg",
+      hotspots: [
+        {
+          position: [-30, -30],
+          targetScene: "Lab"
+        }
+      ]
+    }
+  ]
 };
 
 const imageReducer = (state = initialState, action) => {
