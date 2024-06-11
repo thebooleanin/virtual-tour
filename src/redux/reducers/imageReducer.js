@@ -5,59 +5,11 @@ import {
 } from "../types";
 
 const initialState = {
-  scenes: [
-    {
-      name: "Entrance",
-      image: "/images/1.jpg",
-      hotspots: [
-        {
-          position: [-30, -30],
-          targetScene: "Reception"
-        }
-      ]
-    },
-    {
-      name: "Reception",
-      image: "/images/lobbyV2.jpg",
-      hotspots: [
-        {
-          position: [15, 25],
-          targetScene: "Lab"
-        },
-        {
-          position: [-30, -30],
-          targetScene: "Entrance"
-        }
-      ]
-    },
-    {
-      name: "Lab",
-      image: "/images/clinic.jpg",
-      hotspots: [
-        {
-          position: [15, 40],
-          targetScene: "Reception"
-        },
-        {
-          position: [-30, 40],
-          targetScene: "X-ray Lab"
-        }
-      ]
-    },
-    {
-      name: "X-ray Lab",
-      image: "/images/xray.jpg",
-      hotspots: [
-        {
-          position: [-30, -30],
-          targetScene: "Lab"
-        }
-      ]
-    }
-  ]
+  scenes: []
 };
 
 const imageReducer = (state = initialState, action) => {
+  console.log(action.payload, 'action.payload')
   switch (action.type) {
     case FETCH_IMAGES_REQUEST:
       return {
@@ -69,7 +21,7 @@ const imageReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        images: action.payload ? action.payload : initialState.images,
+        images: action.payload?.length ? action.payload : initialState.images,
       };
     case FETCH_IMAGES_FAILURE:
       return {
