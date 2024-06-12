@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const imageReducer = (state = initialState, action) => {
-  console.log(action.payload, 'action.payload')
+
   switch (action.type) {
     case FETCH_IMAGES_REQUEST:
       return {
@@ -18,10 +18,12 @@ const imageReducer = (state = initialState, action) => {
         error: null,
       };
     case FETCH_IMAGES_SUCCESS:
+      console.log(action.payload?.length, 'action.payload')
       return {
         ...state,
         loading: false,
         images: action.payload?.length ? action.payload : initialState.images,
+        scenes: action.payload?.length ? action.payload : initialState.images,
       };
     case FETCH_IMAGES_FAILURE:
       return {

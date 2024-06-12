@@ -19,6 +19,7 @@ function PannellumViewer({ id }) {
         }
     };
 
+    
     const handleFullScreen = () => {
         const elem = document.getElementById('pannellum-viewer');
         if (elem.requestFullscreen) {
@@ -51,6 +52,7 @@ function PannellumViewer({ id }) {
             .catch(error => dispatch(fetchImagesFailure(error)));
     }, []);
     useEffect(() => {
+        console.log(scenes,"9090");
         if (scenes?.length) {
             setItems(scenes)
         }
