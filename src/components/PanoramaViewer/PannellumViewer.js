@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchImagesRequest, fetchImagesFailure, fetchImagesSuccess } from '../../redux/actions/imageActions'
 import axios from 'axios';
 
-function PannellumViewer() {
+function PannellumViewer({ id }) {
     const dispatch = useDispatch()
     const [currentScene, setCurrentScene] = useState(0);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -33,7 +33,7 @@ function PannellumViewer() {
     };
     useEffect(() => {
         dispatch(fetchImagesRequest());
-        axios.get(process.env.REACT_APP_BACKEND_URI)
+        axios.get(`${process.env.REACT_APP_BACKEND_URI}/${id}`)
             .then(response => {
                 console.log(response.data, 'response.data')
                 let data = []
