@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchImagesRequest, fetchImagesFailure, fetchImagesSuccess } from '../../redux/actions/imageActions'
 import axios from 'axios';
 
-function PannellumViewer({ id }) {
+function PannellumViewer({ id, qsceneName }) {
     const dispatch = useDispatch()
     const [currentScene, setCurrentScene] = useState(0);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +19,7 @@ function PannellumViewer({ id }) {
         }
     };
 
-    
+
     const handleFullScreen = () => {
         const elem = document.getElementById('pannellum-viewer');
         if (elem.requestFullscreen) {
@@ -34,7 +34,7 @@ function PannellumViewer({ id }) {
     };
     useEffect(() => {
         dispatch(fetchImagesRequest());
-        axios.get(`${process.env.REACT_APP_BACKEND_URI}/${id}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URI}/${id}?${qsceneName?.length ? "sceneName=" + qsceneName : ""}`)
             .then(response => {
                 console.log(response.data, 'response.data')
                 let data = []
@@ -50,9 +50,9 @@ function PannellumViewer({ id }) {
                 dispatch(fetchImagesSuccess(data))
             })
             .catch(error => dispatch(fetchImagesFailure(error)));
-    }, []);
+    }, [dispatch]);
     useEffect(() => {
-        console.log(scenes,"9090");
+        console.log(scenes, "9090");
         if (scenes?.length) {
             setItems(scenes)
         }
@@ -74,13 +74,13 @@ function PannellumViewer({ id }) {
                             console.log("panorama loaded");
                         }}
                     >
-                        {items[currentScene].hotspots.map((hotspot, index) => (
+                        {items[currentScene]?.hotspots?.map((hotspot, index) => (
                             <Pannellum.Hotspot
                                 key={`hotspot-${index}`}
                                 type="custom"
-                                pitch={hotspot.position[1]}
-                                yaw={hotspot.position[0]}
-                                handleClick={() => goToScene(hotspot.targetScene)}
+                                pitch={hotspot?.position?.[1]}
+                                yaw={hotspot?.position?.[0]}
+                                handleClick={() => goToScene(hotspot?.targetScene)}
                                 name={`hs-${index}`}
                             />
                         ))}
@@ -89,7 +89,7 @@ function PannellumViewer({ id }) {
                         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)}>
                             &#9776; {/* Unicode for hamburger icon */}
                         </button>
-                        {menuOpen && (
+                        {menuOpen && scenes?.[0]?.hotspots?.length && (
                             <div className="scene-names">
                                 {items.map((scene, index) => (
                                     <button
@@ -102,10 +102,13 @@ function PannellumViewer({ id }) {
                                 ))}
                             </div>
                         )}
-                        <div className="navigation-buttons">
-                            <button onClick={() => goToScene(items[(currentScene - 1 + items.length) % items.length].name)}>Previous</button>
-                            <button onClick={() => goToScene(items[(currentScene + 1) % items.length].name)}>Next</button>
-                        </div>
+                        {
+                            scenes?.[0]?.hotspots?.length &&
+                            <div className="navigation-buttons">
+                                <button onClick={() => goToScene(items[(currentScene - 1 + items.length) % items.length].name)}>Previous</button>
+                                <button onClick={() => goToScene(items[(currentScene + 1) % items.length].name)}>Next</button>
+                            </div>
+                        }
                     </div>
                 </>
             ) : (
