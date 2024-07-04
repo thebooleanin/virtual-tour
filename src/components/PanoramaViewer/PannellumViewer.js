@@ -57,7 +57,8 @@ function PannellumViewer({ id, qsceneName }) {
             setItems(scenes)
         }
     }, [scenes])
-    return (
+    console.log(items, 'items')
+    return scenes?.length ?
         <div id="pannellum-viewer" className="pannellum-viewer">
             {items?.length ? (
                 <>
@@ -115,7 +116,7 @@ function PannellumViewer({ id, qsceneName }) {
                 <div>No scenes available.</div>
             )}
         </div>
-    );
+        : <div>No Preview available.</div>
 }
 
 export default PannellumViewer;
