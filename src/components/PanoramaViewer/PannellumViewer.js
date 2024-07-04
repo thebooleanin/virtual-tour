@@ -36,7 +36,7 @@ function PannellumViewer({ id, qsceneName }) {
         dispatch(fetchImagesRequest());
         axios.get(`${process.env.REACT_APP_BACKEND_URI}/${id}?${qsceneName?.length ? "sceneName=" + qsceneName : ""}`)
             .then(response => {
-                console.log(response.data, 'response.data')
+                console.log(response, 'response.data')
                 let data = []
                 if (response.data?.result?.length) {
                     data = response.data?.result?.map((el) => {
@@ -116,7 +116,7 @@ function PannellumViewer({ id, qsceneName }) {
                 <div>No scenes available.</div>
             )}
         </div>
-        : <div>No Preview available.</div>
+        : <div className="no-preview">No Preview available Currently.</div>
 }
 
 export default PannellumViewer;
